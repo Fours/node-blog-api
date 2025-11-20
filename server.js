@@ -1,21 +1,61 @@
 import http from 'node:http'
-import { handleGetAllPosts, handleNotFound } from './handlers/requestHandlers.js'
+import { 
+    handleGetAllPosts, 
+    handleGetOnePost, 
+    handleNotFound,
+    handleError 
+} from './handlers/requestHandlers.js'
 
 const PORT = 3000
+const PROTOCOL = 'http'
 
 const server = http.createServer(async (req, res) => {
 
-    if (req.url.startsWith('/api')) {
+    const host = req.headers.host.split(`:${PORT}`)[0]        
+    const url = new URL(`${PROTOCOL}://${host}${req.url}`)
+    
+    try {
+        
+        if (url.pathname.startsWith('/api')) {
 
-        if(req.url === '/api/posts') {
-            handleGetAllPosts(res)
+            if(url.pathname === '/api/posts') {
+                switch(req.method) {
+                    case 'GET':
+                        handleGetAllPosts(res)
+                        break;
+                    case 'POST':
+                        handleNotFound(res)
+                        break;
+                    case 'PUT':
+                        handleNotFound(res)
+                        break;
+                    case 'PATCH':
+                        handleNotFound(res)
+                        break;
+                    default:
+                        handleNotFound(res)
+                }
+            } else if (url.pathname.startsWith('/api/posts/')) {
+                const segments = url.pathname.split('/')
+                if (segments.length === 4) {
+                    handleGetOnePost(res, segments[3])
+                } else {
+                    handleNotFound(res)
+                }
+            } else {
+                handleNotFound(res)
+            }
+
         } else {
             handleNotFound(res)
         }
 
-    } else {
-        handleNotFound(res)
+    } catch(err) {
+        console.log(err)
+        handleError(res, err)
     }
+    
+    
 })
 
 server.listen(PORT, () => console.log(`Connected on port: ${PORT}`))
