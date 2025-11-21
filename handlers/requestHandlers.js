@@ -8,34 +8,34 @@ import sanitizeItemStrings from '../utils/sanitizeItemStrings.js'
 export async function handleGetAll(res, queryParams) {
 
     const data = await readData()
-    const filteredPosts = Object.keys(queryParams).length > 0 ? filterPosts(data, queryParams) : data
-    sendResponse(res, 200, 'application/json', JSON.stringify(filteredPosts))
+    const filteredItems = Object.keys(queryParams).length > 0 ? filterItems(data, queryParams) : data
+    sendResponse(res, 200, 'application/json', JSON.stringify(filteredItems))
 }
 
-function filterPosts(posts, queryParams) {
+function filterItems(items, queryParams) {
     
-    let filteredPosts = posts
+    let filteredItems = items
     if (queryParams.author) {
-        filteredPosts = filteredPosts.filter(post => {
+        filteredItems = filteredItems.filter(post => {
             return queryParams.author.toLowerCase() === post.author.toLowerCase()
         })
     }
     if (queryParams.tags) {
         const tags = queryParams.tags.split(',')
-        filteredPosts = filteredPosts.filter(post => {
+        filteredItems = filteredItems.filter(post => {
             return tags.every(tag => {
                 return post.tags.map(t => t.toLowerCase()).includes(tag.toLowerCase())
             })
         })
     }
-    return filteredPosts
+    return filteredItems
 }
 
-export async function handleGetOne(res, postId) {
+export async function handleGetOne(res, id) {
     const data = await readData()
-    const post = data.find(p => p.id === postId)
-    if (post) {
-        sendResponse(res, 200, 'application/json', JSON.stringify(post))    
+    const item = data.find(p => p.id === id)
+    if (item) {
+        sendResponse(res, 200, 'application/json', JSON.stringify(item))
     } else {
         handleNotFound(res)
     }
@@ -86,6 +86,19 @@ export async function handlePut(req, res) {
             handleBadRequest(res)
         }
     }
+}
+
+export async function handleDelete(res, id) {
+    const data = await readData()
+    const existingItem = data.find(item => item.id === id)
+    if(existingItem) {
+        const updatedData = data.filter(item => item.id !== id)
+        await writeData(updatedData)
+        sendResponse(res, 204, 'application/json', '')
+    } else {
+        handleNotFound(res)
+    }
+
 }
 
 function handleBadRequest(res) {

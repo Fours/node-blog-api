@@ -3,7 +3,8 @@ import {
     handleGetAll, 
     handleGetOne,
     handlePost,
-    handlePut, 
+    handlePut,
+    handleDelete, 
     handleNotFound,
     handleError 
 } from './handlers/requestHandlers.js'
@@ -30,14 +31,24 @@ const server = http.createServer(async (req, res) => {
                         break;
                     case 'PUT':
                         handlePut(req, res)
-                        break;
+                        break;    
                     default:
                         handleNotFound(res)
                 }
             } else if (url.pathname.startsWith('/api/posts/')) {
                 const segments = url.pathname.split('/')
                 if (segments.length === 4) {
-                    handleGetOne(res, segments[3])
+                    const id = segments[3]
+                    switch(req.method) {
+                        case 'GET':
+                            handleGetOne(res, id)
+                            break;
+                        case 'DELETE':
+                            handleDelete(res, id)
+                            break;
+                        default:
+                            handleNotFound(res)    
+                    }
                 } else {
                     handleNotFound(res)
                 }

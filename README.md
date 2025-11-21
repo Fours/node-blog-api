@@ -34,3 +34,7 @@ Replace a blog post if it exists or create a new one
 ```
 PUT /posts
 ```
+Delete one blog post
+```
+DELETE /posts/{id}
+```
