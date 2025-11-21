@@ -20,7 +20,7 @@ function filterPosts(posts, queryParams) {
         const tags = queryParams.tags.split(',')
         filteredPosts = filteredPosts.filter(post => {
             return tags.every(tag => {
-                return post.tags.includes(tag)
+                return post.tags.map(t => t.toLowerCase()).includes(tag.toLowerCase())
             })
         })
     }
