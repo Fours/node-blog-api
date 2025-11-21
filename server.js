@@ -2,7 +2,8 @@ import http from 'node:http'
 import { 
     handleGetAll, 
     handleGetOne,
-    handlePost, 
+    handlePost,
+    handlePut, 
     handleNotFound,
     handleError 
 } from './handlers/requestHandlers.js'
@@ -28,10 +29,7 @@ const server = http.createServer(async (req, res) => {
                         handlePost(req, res)
                         break;
                     case 'PUT':
-                        handleNotFound(res)
-                        break;
-                    case 'PATCH':
-                        handleNotFound(res)
+                        handlePut(req, res)
                         break;
                     default:
                         handleNotFound(res)

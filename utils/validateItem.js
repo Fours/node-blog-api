@@ -1,4 +1,4 @@
-export default function validateRequestData(data) {
+export default function validateItem(data) {
 
     if(
         typeof data.timestamp !== 'number' || 

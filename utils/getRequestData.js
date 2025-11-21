@@ -8,6 +8,6 @@ export default async function getRequestData(req) {
   try {
     return JSON.parse(body)
   } catch (err) {
-    throw new Error(`Invalid JSON format: ${err}`)
+    return {}
   }
 }

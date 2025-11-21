@@ -31,24 +31,5 @@
     ],
     "blurb": "Aenean vitae nisi dignissim, fermentum lacus a, volutpat lorem. Praesent in tincidunt ex, quis tincidunt urna.",
     "body": "<p>In ultricies erat vitae vehicula vestibulum. Aliquam auctor, nulla nec congue congue, nisl sem euismod nisi, non tristique quam nibh eget lorem.</p><p>Nulla euismod sodales mi ut blandit. Maecenas non scelerisque felis. Integer blandit risus justo, ac tincidunt enim vulputate in. Duis at elit at urna sollicitudin iaculis. Suspendisse at turpis ex. In sit amet risus non ex mattis posuere sed id ligula. Nullam sed risus mauris. Curabitur nibh orci, sollicitudin et maximus et, tincidunt fringilla turpis. Donec accumsan erat dolor. Donec tellus tellus, ultricies sit amet molestie vel, viverra quis eros. Nullam pretium iaculis iaculis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p>"
-  },
-  {
-    "timestamp": 12342134,
-    "author": "test",
-    "tags": [],
-    "blurb": "test",
-    "body": "",
-    "id": "b8e6487c-4e25-4d13-a4ae-c5b9f3f13eac"
-  },
-  {
-    "timestamp": 12342134,
-    "author": "Kyle",
-    "tags": [
-      "test",
-      "ipsum"
-    ],
-    "blurb": "test",
-    "body": "test",
-    "id": "886eb3a7-bf78-497e-bc97-bc5dbebd4236"
-  }
+  }  
 ]
