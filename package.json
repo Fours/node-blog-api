@@ -11,6 +11,7 @@
   "author": "Kyle Willett",
   "license": "ISC",
   "dependencies": {
-    "sanitize-html": "2.17.0"
+    "sanitize-html": "2.17.0",
+    "uuid": "13.0.0"
   }
 }

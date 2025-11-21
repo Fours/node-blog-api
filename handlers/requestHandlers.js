@@ -1,9 +1,14 @@
-import readPostsData from '../utils/readPostsData.js'
+import { v4 as uuidv4 } from 'uuid';
+import readData from '../utils/readData.js'
 import sendResponse from '../utils/sendResponse.js'
+import getRequestData from '../utils/getRequestData.js'
+import validateRequestData from '../utils/validateRequestData.js'
+import sanitizeInputStrings from '../utils/sanitizeInputStrings.js'
+import writeNewPost from '../utils/writeNewPost.js'
 
-export async function handleGetAllPosts(res, queryParams) {
+export async function handleGetAll(res, queryParams) {
 
-    const data = await readPostsData()
+    const data = await readData()
     const filteredPosts = Object.keys(queryParams).length > 0 ? filterPosts(data, queryParams) : data
     sendResponse(res, 200, 'application/json', JSON.stringify(filteredPosts))
 }
@@ -27,14 +32,31 @@ function filterPosts(posts, queryParams) {
     return filteredPosts
 }
 
-export async function handleGetOnePost(res, postId) {
-    const data = await readPostsData()
+export async function handleGetOne(res, postId) {
+    const data = await readData()
     const post = data.find(p => p.id === postId)
     if (post) {
         sendResponse(res, 200, 'application/json', JSON.stringify(post))    
     } else {
         handleNotFound(res)
     }
+}
+
+export async function handlePost(req, res) {
+
+    const payload = await getRequestData(req)
+    const sanitizedPayload = sanitizeInputStrings(payload)
+    const validatedData = validateRequestData(sanitizedPayload)
+    if (validatedData) {
+        validatedData.id = uuidv4()
+        await writeNewPost(validatedData)
+        sendResponse(res, 201, 'application/json', JSON.stringify(validatedData))
+    } else {
+        sendResponse(res, 400, 'application/json', JSON.stringify({
+            message: 'Invalid request data'
+       })) 
+    }
+
 }
 
 export function handleNotFound(res) {

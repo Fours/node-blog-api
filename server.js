@@ -1,7 +1,8 @@
 import http from 'node:http'
 import { 
-    handleGetAllPosts, 
-    handleGetOnePost, 
+    handleGetAll, 
+    handleGetOne,
+    handlePost, 
     handleNotFound,
     handleError 
 } from './handlers/requestHandlers.js'
@@ -21,10 +22,10 @@ const server = http.createServer(async (req, res) => {
             if(url.pathname === '/api/posts') {
                 switch(req.method) {
                     case 'GET':
-                        handleGetAllPosts(res, Object.fromEntries(url.searchParams))
+                        handleGetAll(res, Object.fromEntries(url.searchParams))
                         break;
                     case 'POST':
-                        handleNotFound(res)
+                        handlePost(req, res)
                         break;
                     case 'PUT':
                         handleNotFound(res)
@@ -38,7 +39,7 @@ const server = http.createServer(async (req, res) => {
             } else if (url.pathname.startsWith('/api/posts/')) {
                 const segments = url.pathname.split('/')
                 if (segments.length === 4) {
-                    handleGetOnePost(res, segments[3])
+                    handleGetOne(res, segments[3])
                 } else {
                     handleNotFound(res)
                 }
