@@ -21,7 +21,7 @@ const server = http.createServer(async (req, res) => {
             if(url.pathname === '/api/posts') {
                 switch(req.method) {
                     case 'GET':
-                        handleGetAllPosts(res)
+                        handleGetAllPosts(res, Object.fromEntries(url.searchParams))
                         break;
                     case 'POST':
                         handleNotFound(res)
@@ -54,7 +54,6 @@ const server = http.createServer(async (req, res) => {
         console.log(err)
         handleError(res, err)
     }
-    
     
 })
 

@@ -1,9 +1,30 @@
 import readPostsData from '../utils/readPostsData.js'
 import sendResponse from '../utils/sendResponse.js'
 
-export async function handleGetAllPosts(res) {    
+export async function handleGetAllPosts(res, queryParams) {
+
     const data = await readPostsData()
-    sendResponse(res, 200, 'application/json', JSON.stringify(data))
+    const filteredPosts = Object.keys(queryParams).length > 0 ? filterPosts(data, queryParams) : data
+    sendResponse(res, 200, 'application/json', JSON.stringify(filteredPosts))
+}
+
+function filterPosts(posts, queryParams) {
+    
+    let filteredPosts = posts
+    if (queryParams.author) {
+        filteredPosts = filteredPosts.filter(post => {
+            return queryParams.author.toLowerCase() === post.author.toLowerCase()
+        })
+    }
+    if (queryParams.tags) {
+        const tags = queryParams.tags.split(',')
+        filteredPosts = filteredPosts.filter(post => {
+            return tags.every(tag => {
+                return post.tags.includes(tag)
+            })
+        })
+    }
+    return filteredPosts
 }
 
 export async function handleGetOnePost(res, postId) {
