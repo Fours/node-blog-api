@@ -8,7 +8,7 @@ export default function sanitizeInputStrings(data) {
         if (typeof value === 'string') {
             sanitizedData[key] = 
                 sanitizeHtml(value, { allowedTags: ['p','b'], allowedAttributes: {}}).trim()
-        } else if (typeof value === 'array') {
+        } else if (Array.isArray(value)) {
             sanitizedData[key] = value.map(item => {
                 if (typeof item === 'string') {
                     return sanitizeHtml(item, { allowedTags: [], allowedAttributes: {}}).trim()
